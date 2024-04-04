@@ -1,20 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import RecipeModal from './RecipeModal';
+import { useLocation } from 'react-router-dom';
 
 const RecipeSearch = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleSearch = async () => {
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const queryParam = params.get('q');
+    if (queryParam) {
+      setQuery(queryParam);
+      handleSearch(queryParam);
+    }
+  }, [location.search]);
+
+  const handleSearch = async (searchQuery) => {
     try {
       const response = await axios.get('http://localhost:4000/nutritionix', {
-        params: { q: query }
+        params: { q: searchQuery }
       });
       console.log('Recipe search results:', response.data);
-
-      setResults(response.data.hits);
+      setResults(response.data);
+      navigate(`/?q=${encodeURIComponent(searchQuery)}`);
     } catch (error) {
       console.error('Error fetching recipes:', error);
     }
@@ -36,7 +47,7 @@ const RecipeSearch = () => {
               <button
                 className="btn btn-primary"
                 type="button"
-                onClick={handleSearch}
+                onClick={() => handleSearch(query)}
               >
                 Search
               </button>
@@ -56,19 +67,12 @@ const RecipeSearch = () => {
               <div className="card-body">
                 <h5 className="card-title">{result.recipe.label}</h5>
                 <p className="card-text">Calories: {result.recipe.calories}</p>
-            <button
-                  className="btn btn-primary"
-                  target="_blank"
-                  rel="noopener noreferrer" onClick={() => setSelectedRecipe(result.recipe)}>View Recipe</button>
+                <Link to={`/recipe/${encodeURIComponent(result.recipe.label)}`} state={{ recipe: result.recipe }} className="btn btn-primary">View Recipe</Link>
               </div>
             </div>
           </div>
         ))}
       </div>
-
-{selectedRecipe && (
-  <RecipeModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
-)}
     </div>
   );
 };
