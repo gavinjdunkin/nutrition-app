@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import * as client from "./client.ts";
 
 const RecipeSearch = () => {
   const [query, setQuery] = useState('');
@@ -9,26 +10,11 @@ const RecipeSearch = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const queryParam = params.get('q');
-    if (queryParam) {
-      setQuery(queryParam);
-      handleSearch(queryParam);
-    }
-  }, [location.search]);
-
   const handleSearch = async (searchQuery) => {
-    try {
-      const response = await axios.get('http://localhost:4000/nutritionix', {
-        params: { q: searchQuery }
-      });
-      console.log('Recipe search results:', response.data);
-      setResults(response.data);
-      navigate(`/?q=${encodeURIComponent(searchQuery)}`);
-    } catch (error) {
-      console.error('Error fetching recipes:', error);
-    }
+    const results = await client.handleSearch(searchQuery);
+    console.log('Recipe search results:', results);
+    setResults(results);
+    navigate(`/?q=${encodeURIComponent(searchQuery)}`);
   };
 
   return (
@@ -56,22 +42,22 @@ const RecipeSearch = () => {
         </div>
       </div>
       <div className="row">
-        {results.map((result, index) => (
-          <div className="col-md-4 mb-4" key={index}>
-            <div className="card">
-              <img
-                src={result.recipe.image}
-                className="card-img-top"
-                alt={result.recipe.label}
-              />
-              <div className="card-body">
-                <h5 className="card-title">{result.recipe.label}</h5>
-                <p className="card-text">Calories: {result.recipe.calories}</p>
-                <Link to={`/recipe/${encodeURIComponent(result.recipe.label)}`} state={{ recipe: result.recipe }} className="btn btn-primary">View Recipe</Link>
+          {results.map((result: { recipe: any }, index: number) => (
+            <div className="col-md-4 mb-4" key={index}>
+              <div className="card">
+                <img
+                  src={result.recipe.image}
+                  className="card-img-top"
+                  alt={result.recipe.label}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{result.recipe.label}</h5>
+                  <p className="card-text">Calories: {result.recipe.calories}</p>
+                  <Link to={`/recipe/${encodeURIComponent(result.recipe.label)}`} state={{ recipe: result.recipe }} className="btn btn-primary">View Recipe</Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );

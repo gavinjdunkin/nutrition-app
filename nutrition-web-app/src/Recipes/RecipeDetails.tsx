@@ -3,16 +3,17 @@ import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 //intialize state to likes and comments, then add to state after submit, so updates locally without pulling from server
 const RecipeDetails = () => {
   const location = useLocation();
   const recipe = location.state.recipe;
-  const [likes, setLikes] = useState(0);
-  const [comments, setComments] = useState([]);
+  const [likes, setLikes] = useState(recipe.likes.count);
   const [commentInput, setCommentInput] = useState('');
+  console.log(recipe);
 
   // Function to handle like button click
   const handleLike = async () => {
@@ -48,13 +49,16 @@ const RecipeDetails = () => {
           <h1>{recipe.label}</h1>
           <p>Calories: {recipe.calories}</p>
           <img src={recipe.image} alt={recipe.label} className="img-fluid rounded" />
-          <Button variant="primary" onClick={handleLike}>Like ({recipe.likes})</Button>
+          <Button variant="primary" onClick={handleLike}>Like {likes}</Button>
         </div>
         <div className="col-md-6">
           <h2>Comments</h2>
           <ListGroup>
             {recipe.comments.map((comment, index) => (
-              <ListGroup.Item key={index}>{comment.text}</ListGroup.Item>
+              <ListGroup.Item key={index}>
+                <span>{comment.text}</span> {/* Display comment text */}
+                <Link to={`/profile/${comment.userId}`} className="ml-2">View Profile</Link> {/* Link to commenter's profile */}
+              </ListGroup.Item>
             ))}
           </ListGroup>
           <Form onSubmit={handleCommentSubmit}>

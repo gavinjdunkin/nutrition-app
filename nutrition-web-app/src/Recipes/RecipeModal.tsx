@@ -2,7 +2,7 @@ import React from 'react';
 
 const RecipeModal = ({ recipe, onClose }) => {
   return (
-    <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" role="dialog">
+    <div className="modal fade show" style={{ display: 'block' }} tabIndex={-1} role="dialog">
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
