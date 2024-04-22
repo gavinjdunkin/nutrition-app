@@ -1,13 +1,9 @@
-import React from 'react';
-import RecipeSearch from './RecipeSearch';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import NutritionApp from './NutritionApp/index.tsx';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Recipe Search</h1>
-      <RecipeSearch />
-    </div>
+    <NutritionApp />
   );
 }
 
