@@ -10,7 +10,7 @@ export default function Signin() {
   const navigate = useNavigate();
   const signin = async () => {
     await client.signin(credentials);
-    navigate("/Account/Profile");
+    navigate("/Profile");
   };
   return (
     <div>
@@ -20,7 +20,7 @@ export default function Signin() {
       <input value={credentials.password} onChange={(e) =>
         setCredentials({ ...credentials, password: e.target.value })}/>
       <button onClick={signin}> Signin </button>
-      <button onClick={() => navigate("/Account/Signup")}> Signup </button>
+      <button onClick={() => navigate("/Register")}> Signup </button>
     </div>
   );
 }

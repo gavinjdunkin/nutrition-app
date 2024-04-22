@@ -9,21 +9,28 @@ export default function Profile() {
     role: "USER",
     following: [],
   });
-
+  const [followedUsernames, setFollowedUsernames] = useState([]);
   const navigate = useNavigate();
 
-  const fetchProfile = async () => {
-    const account = await client.profile();
-    setProfile(account);
-  };
-
   useEffect(() => {
-    fetchProfile();
+    const fetchData = async () => {
+      const account = await client.profile();
+      setProfile(account);
+      const usernames = await Promise.all(
+        account.following.map(async (userId) => {
+          const user = await client.findUserById(userId);
+          return user.username;
+        })
+      );
+      setFollowedUsernames(usernames);
+    };
+
+    fetchData();
   }, []);
 
   const signout = async () => {
     await client.signout();
-    navigate("/Account/Signin");
+    navigate("/Login");
   };
 
   const save = async () => {
@@ -62,13 +69,13 @@ export default function Profile() {
             <div className="card-body">
               <h5 className="card-title">Followed Users</h5>
               <div className="list-group">
-                {profile.following.map((user: any) => (
+                {followedUsernames.map((username, index) => (
                   <Link
-                    key={user}
-                    to={`/profile/${user}`}
+                    key={index}
+                    to={`/profile/${profile.following[index]}`}
                     className="list-group-item list-group-item-action"
                   >
-                    {user.username}
+                    {username}
                   </Link>
                 ))}
               </div>

@@ -53,7 +53,7 @@ const RecipeSearch = () => {
                 <div className="card-body">
                   <h5 className="card-title">{result.recipe.label}</h5>
                   <p className="card-text">Calories: {result.recipe.calories}</p>
-                  <Link to={`/recipe/${encodeURIComponent(result.recipe.id)}`} className="btn btn-primary">View Recipe</Link>
+                  <Link to={`/details/${encodeURIComponent(result.recipe.id)}`} className="btn btn-primary">View Recipe</Link>
                 </div>
               </div>
             </div>

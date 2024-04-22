@@ -113,7 +113,7 @@ const RecipeDetails = () => {
             {recipe.comments.map((comment, index) => (
               <ListGroup.Item key={index}>
                 <span>{comment.text}</span>
-                <Link to={`/Account/Profile/${comment.user}`} className="ml-2">View Profile</Link>
+                <Link to={`/Profile/${comment.user}`} className="ml-2">View Profile</Link>
               </ListGroup.Item>
             ))}
           </ListGroup>
