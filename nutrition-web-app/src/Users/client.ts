@@ -4,9 +4,12 @@ export const BASE_API = process.env.REACT_APP_BASE_API_URL;
 export const USERS_API = `${BASE_API}/api/users`;
 export const isLoggedIn = async () => {
   try {
-    await profile();
+    console.log('isLoggedIn');
+    const response = await profile();
+    console.log(response);
     return true;
   } catch (error) {
+    console.error('Not logged in:', error);
     return false;
   }
 }
@@ -55,3 +58,7 @@ export const findAllUsers = async () => {
   const response = await axios.get(`${USERS_API}`);
   return response.data;
 };
+export const followUser = async (userId: string) => {
+  const response = await axios.post(`${USERS_API}/follow/${userId}`);
+  return response.data;
+}

@@ -64,8 +64,8 @@ export default function Profile() {
               <div className="list-group">
                 {profile.following.map((user: any) => (
                   <Link
-                    key={user.id}
-                    to={`/profile/${user.id}`}
+                    key={user}
+                    to={`/profile/${user}`}
                     className="list-group-item list-group-item-action"
                   >
                     {user.username}

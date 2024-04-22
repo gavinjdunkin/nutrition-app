@@ -1,0 +1,40 @@
+/* ViewProfile.css */
+.profile-heading {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-info {
+    margin-bottom: 2rem;
+  }
+  
+  .profile-info p {
+    margin: 0.5rem 0;
+  }
+  
+  .liked-recipes h2,
+  .followed-users h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .recipe-list,
+  .user-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 1rem;
+  }
+  
+  .user-link {
+    display: block;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .user-link:hover {
+    background-color: #f4f4f4;
+  }
+  
